@@ -31,13 +31,16 @@ public class WeatherJsonUtils {
         JsonParser parser=new JsonParser();
         JsonObject object=parser.parse(json).getAsJsonObject();
         JsonElement status=object.get("status");
-        if(status!=null&&"OK".equals(status.toString())){
+        if(status!=null&&status.toString().contains("OK")){
             JsonObject result=object.getAsJsonObject("result");
             if (result!=null){
-                JsonObject addressComponent=result.getAsJsonObject("addressComponent");
+                JsonObject addressComponent=result.get("addressComponent").getAsJsonObject();
                 if (addressComponent!=null){
                     JsonElement cityElement=addressComponent.get("city");
-                    if (cityElement!=null){return cityElement.getAsString().replace("市","");}
+                    if (cityElement!=null){
+//                        return cityElement.getAsString().replace("市","");
+                        return cityElement.getAsString();
+                    }
                 }
             }
         }

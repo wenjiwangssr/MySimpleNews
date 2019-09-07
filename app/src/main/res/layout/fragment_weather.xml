@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:padding="12dp"
         android:visibility="gone"
-        android:gravity="center_horizontal" >
+        android:gravity="center_horizontal" > <!--   这个布局就隐藏了?    -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

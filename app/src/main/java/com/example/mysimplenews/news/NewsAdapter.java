@@ -78,6 +78,7 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             v.setOnClickListener(this);
 
 
+
         }
 
         @Override
@@ -90,11 +91,13 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        NewsBean news=mData.get(position);
-        if (news==null)return;
-        ((ItemViewHolder)holder).mTitle.setText(news.getTitle());
-        ((ItemViewHolder)holder).mDesc.setText(news.getDigest());
-        ImageLoaderUtils.display(mContext,((ItemViewHolder)holder).mNewsImg,news.getImgsrc());
+        if (holder instanceof ItemViewHolder) {
+            NewsBean news=mData.get(position);
+            if (news==null)return;
+            ((ItemViewHolder)holder).mTitle.setText(news.getTitle());
+            ((ItemViewHolder)holder).mDesc.setText(news.getDigest());
+            ImageLoaderUtils.display(mContext,((ItemViewHolder)holder).mNewsImg,news.getImgsrc());
+        }
     }
 
     @Override
@@ -112,15 +115,17 @@ public class NewsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void isShowFooter(boolean showFooter){
         this.mShowFooter=showFooter;
     }
+
+
+
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
         this.mOnItemClickListener=onItemClickListener;
     }
-
-
-
     public interface OnItemClickListener {
         public void onItemClick(View view, int position);
     }
+
+
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {
         public FooterViewHolder(View v) {

@@ -27,11 +27,13 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     //noinspection GradleCompatible
-    implementation 'com.android.support:design:28.0.0'
+    implementation project(':swipeback')
+    implementation 'com.google.android.material:material:1.0.0'
     implementation 'de.hdodenhof:circleimageview:3.0.1'
     implementation 'com.squareup.okhttp3:okhttp:4.1.0'
     implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'me.hz89.swipeback:swipeback:1.0.9'
+//    implementation 'me.imid.swipebacklayout.lib:library:1.0.0'
     implementation 'org.sufficientlysecure:html-textview:1.3'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
+    implementation 'androidx.viewpager:viewpager:1.0.0'
 }

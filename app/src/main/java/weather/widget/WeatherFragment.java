@@ -114,20 +114,21 @@ public class WeatherFragment extends Fragment  implements WeatherView {
         List<View>adapterList=new ArrayList<>();
         for (WeatherBean weatherBean:lists
              ) {
-            View view=LayoutInflater.from(getActivity()).inflate(R.layout.fragment_weather,null,false);
+            View view=LayoutInflater.from(getActivity()).inflate(R.layout.item_weather,null,false);
             TextView dateTV = (TextView) view.findViewById(R.id.date);
             ImageView todayWeatherImage = (ImageView) view.findViewById(R.id.weatherImage);
             TextView todayTemperatureTV = (TextView) view.findViewById(R.id.weatherTemp);
             TextView todayWindTV = (TextView) view.findViewById(R.id.wind);
             TextView todayWeatherTV = (TextView) view.findViewById(R.id.weather);
 
-            dateTV.setText(weatherBean.getWeek());
+//            dateTV.setText(weatherBean.getWeek());
+            dateTV.setText(weatherBean.getDate());
             todayTemperatureTV.setText(weatherBean.getTemperature());
             todayWindTV.setText(weatherBean.getWind());
             todayWeatherTV.setText(weatherBean.getWeather());
             todayWeatherImage.setImageResource(weatherBean.getImageRes());
             mWeatherContentLayout.addView(view);
-            adapterList.add(view);//???什么用
+            adapterList.add(view);//
         }
     }
 

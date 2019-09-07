@@ -47,7 +47,7 @@ private ViewPager mViewPager;
         return view;
     }
     private void setupViewPager(ViewPager mViewPager){
-    //fragment中嵌套使用fragment一定要用getChildFragmentManager(),否则会报错
+        //fragment中嵌套使用fragment一定要用getChildFragmentManager(),否则会报错
         MyPagerAdapter adapter=new MyPagerAdapter(getChildFragmentManager());
         adapter.addFragment(NewsListFragment.newInstance(NEWS_TYPE_TOP),getString(R.string.top));
         adapter.addFragment(NewsListFragment.newInstance(NEWS_TYPE_NBA),"NBA");

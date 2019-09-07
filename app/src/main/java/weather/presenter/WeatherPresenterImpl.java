@@ -36,20 +36,22 @@ public class WeatherPresenterImpl implements WeatherPresenter, WeatherModelImpl.
         mWeatherView.setWeatherData(list);
         mWeatherView.hideProgress();
         mWeatherView.showWeatherLayout();
+
+
+    }
+
+    @Override
+    public void onFailure(String msg, Exception e) {
         mWeatherView.hideProgress();
         mWeatherView.showErrorToast("获取天气数据失败");
 
     }
 
     @Override
-    public void onFailure(String msg, Exception e) {
-
-    }
-
-    @Override
     public void loadWeatherData() {
         mWeatherView.showProgress();
-        if (ToolsUtil.isNetworkAvailable(mContext)){
+
+        if (!ToolsUtil.isNetworkAvailable(mContext)){
             mWeatherView.hideProgress();
             mWeatherView.showErrorToast("无网络连接");
             return;

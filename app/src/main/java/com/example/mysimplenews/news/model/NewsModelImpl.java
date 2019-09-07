@@ -1,10 +1,16 @@
 package com.example.mysimplenews.news.model;
 
+import android.app.Activity;
+import android.content.Context;
+import android.util.Log;
+
 import com.example.mysimplenews.beans.NewsBean;
 import com.example.mysimplenews.beans.NewsDetailBean;
 import com.example.mysimplenews.common.Urls;
 import com.example.mysimplenews.news.widget.NewsFragment;
 import com.example.mysimplenews.news.NewsJsonUtils;
+
+import com.example.mysimplenews.utils.MyNetWorkCallBack;
 import com.example.mysimplenews.utils.OkHttpUtils;
 
 import java.io.IOException;
@@ -17,7 +23,7 @@ import okhttp3.Response;
  * The type News model.
  */
 public class NewsModelImpl implements NewsModel {
-    private OkHttpUtils mOkHttpUtils=OkHttpUtils.getmInstance();
+
 
 /**
  *加载新闻列表
@@ -27,19 +33,42 @@ public class NewsModelImpl implements NewsModel {
 
     @Override
     public void loadNews(String url, final int type, final OnLoadNewsListListener listener) {
-        OkHttpUtils.RealCallback realCallback=new OkHttpUtils.RealCallback() {
+//        OkHttpUtils.RealCallback realCallback=new OkHttpUtils.RealCallback() {
+//            @Override
+//            public void onResponse(Call call, Response response) {
+//                List<NewsBean> newsBeanList= null;
+//                try {
+//                    newsBeanList = NewsJsonUtils.readJsonNewsBean(response.body().string(),getID(type));
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                listener.onSuccess(newsBeanList);
+//            }
+//
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                listener.onFailure("load news list failure",e);
+//            }
+//        };
+//        mOkHttpUtils.get(url,realCallback);
+
+         OkHttpUtils.getInstance().doGet(url, new MyNetWorkCallBack() {
+             List<NewsBean> newsBeanList= null;
             @Override
-            public void onResponse(Call call, Response response) {
-                List<NewsBean> newsBeanList= NewsJsonUtils.readJsonNewsBean(response.toString(),getID(type));
-                listener.onSuccess(newsBeanList);
+            public void onError(Exception e) {
+                listener.onFailure("load news failure",e);
+//                Log.e(errorMsg,errorMsg);
             }
 
             @Override
-            public void onFailure(Call call, IOException e) {
-                listener.onFailure("load news list failure",e);
+            public void onSuccess(String successMsg) {
+                newsBeanList = NewsJsonUtils.readJsonNewsBean(successMsg,getID(type));
+                listener.onSuccess(newsBeanList);
             }
-        };
-        mOkHttpUtils.get(url,realCallback);
+        });
+
+
+
     }
 
     /**
@@ -50,20 +79,38 @@ public class NewsModelImpl implements NewsModel {
     @Override
     public void loadNewsDetail(final String docid, final OnLoadNewsDetailListener listener) {
         String url=getDetailUrl(docid);
-        OkHttpUtils.RealCallback realCallback=new OkHttpUtils.RealCallback() {
+//        OkHttpUtils.RealCallback realCallback=new OkHttpUtils.RealCallback() {
+//            @Override
+//            public void onResponse(Call call, Response response)  {
+//                NewsDetailBean newsDetailBean= null;
+//                try {
+//                    newsDetailBean = NewsJsonUtils.readJsonNewsDetailBean(response.body().string(),docid);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                listener.onSuccess(newsDetailBean);
+//            }
+//
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                listener.onFailure("load news detail message failure",e);
+//            }
+//
+//        };
+//        mOkHttpUtils.get(url,realCallback);
+        OkHttpUtils.getInstance().doGet(url, new MyNetWorkCallBack() {
             @Override
-            public void onResponse(Call call, Response response) {
-                NewsDetailBean newsDetailBean=NewsJsonUtils.readJsonNewsDetailBean(response.toString(),docid);
+            public void onError(Exception e) {
+
+            }
+
+            @Override
+            public void onSuccess(String successMsg) {
+                NewsDetailBean newsDetailBean=NewsJsonUtils.readJsonNewsDetailBean(successMsg,docid);
                 listener.onSuccess(newsDetailBean);
             }
+        });
 
-            @Override
-            public void onFailure(Call call, IOException e) {
-                listener.onFailure("load news detail message failure",e);
-            }
-
-        };
-        mOkHttpUtils.get(url,realCallback);
 
     }
     /**

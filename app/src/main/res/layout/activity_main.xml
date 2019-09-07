@@ -6,6 +6,7 @@
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:openDrawer="start"
     tools:context=".main.widget.MainActivity">
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/main_content"

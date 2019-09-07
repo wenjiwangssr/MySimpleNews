@@ -1,6 +1,6 @@
 package com.example.mysimplenews.news.widget;
 
-import android.app.Activity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 
 import com.example.mysimplenews.R;
 import com.example.mysimplenews.beans.NewsBean;
@@ -65,12 +66,13 @@ public class NewsListFragment extends Fragment implements NewsView,SwipeRefreshL
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_news,null);
+        View view=inflater.inflate(R.layout.fragment_newslist,null);
 
         mSwipeRefreshWidget=(SwipeRefreshLayout)view.findViewById(R.id.swipe_refresh_widget);
-        mSwipeRefreshWidget.setColorSchemeResources(
-                R.color.primary,R.color.primary_dark,R.color.primary_light,R.color.accent
-        );
+
+        mSwipeRefreshWidget.setColorSchemeResources(R.color.primary,R.color.primary_dark,R.color.primary_light,R.color.accent);
+
+
         mSwipeRefreshWidget.setOnRefreshListener(this);
 
         mRecyclerView =(RecyclerView)view.findViewById(R.id.recycle_view);
@@ -87,7 +89,7 @@ public class NewsListFragment extends Fragment implements NewsView,SwipeRefreshL
                 if (mData.size()<=0)return;
                 NewsBean news=mNewsAdapter.getItem(position);
                 Intent intent=new Intent(getActivity(),NewsDetailActivity.class);
-                intent.putExtra("news",news);
+                intent.putExtra("news",news);//lei了，向NewsDetailActivity传递数据NewsBean news
 
                 //makeSceneTransitionAnimation共享元素动画
                 //新的activity产生一个过渡动画，动画由两个页面的相同元素生成，这种效果只支持5.0以上的手机。
@@ -120,12 +122,14 @@ public class NewsListFragment extends Fragment implements NewsView,SwipeRefreshL
                 lastVisibleItem=mLinearLayoutManager.findLastVisibleItemPosition();
             }
         });
-        onRefresh();return view;
+        onRefresh();
+        return view;
 
     }
 
     @Override
     public void onRefresh() {
+
         pageIndex=0;
         if (mData!=null)
             mData.clear();

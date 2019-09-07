@@ -1,6 +1,7 @@
 package weather.model;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -12,6 +13,7 @@ import android.util.Log;
 import com.example.mysimplenews.beans.WeatherBean;
 import com.example.mysimplenews.common.Urls;
 import com.example.mysimplenews.utils.LogUtils;
+import com.example.mysimplenews.utils.MyNetWorkCallBack;
 import com.example.mysimplenews.utils.OkHttpUtils;
 
 import java.io.IOException;
@@ -29,23 +31,50 @@ public class WeatherModelImpl implements WeatherModel {
 
     @Override
     public void loadWeatherData(String cityName, final LoadWeatherListener listener) {
+//        try {
+//            String url= Urls.WEATHER + URLEncoder.encode(cityName,"utf-8");
+//            OkHttpUtils.RealCallback callback=new OkHttpUtils.RealCallback() {
+//                @Override
+//                public void onResponse(Call call, Response response) {
+//                    List<WeatherBean> list= null;
+//                    try {
+//                        list = WeatherJsonUtils.getWeatherInfo(response.body().string());
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    listener.onSuccess(list);
+//                }
+//
+//                @Override
+//                public void onFailure(Call call, IOException e) {
+//                    listener.onFailure("load weather data failure",e);
+//                }
+//            };
+//            OkHttpUtils.getmInstance().get(url,callback);
+//        } catch (UnsupportedEncodingException e) {
+//            Log.e(TAG,"url encode failure",e);
+//        }
         try {
+
             String url= Urls.WEATHER + URLEncoder.encode(cityName,"utf-8");
-            OkHttpUtils.RealCallback callback=new OkHttpUtils.RealCallback() {
+
+            OkHttpUtils.getInstance().doGet(url, new MyNetWorkCallBack() {
                 @Override
-                public void onResponse(Call call, Response response) {
-                    List<WeatherBean> list= WeatherJsonUtils.getWeatherInfo(response.toString());
-                    listener.onSuccess(list);
+                public void onError(Exception e) {
+
                 }
 
                 @Override
-                public void onFailure(Call call, IOException e) {
-                    listener.onFailure("load weather data failure",e);
+                public void onSuccess(String successMsg) {
+                    List<WeatherBean> list=null;
+                    list=WeatherJsonUtils.getWeatherInfo(successMsg);
+                    listener.onSuccess(list);
                 }
-            };
-            OkHttpUtils.getmInstance().get(url,callback);
+            });
+
+
         } catch (UnsupportedEncodingException e) {
-            Log.e(TAG,"url encode failure",e);
+            e.printStackTrace();
         }
 
 
@@ -73,23 +102,43 @@ public class WeatherModelImpl implements WeatherModel {
         double longitude=location.getLongitude();
         
         String url=getLocationURL(latitude,longitude);
-        OkHttpUtils.RealCallback callback=new OkHttpUtils.RealCallback() {
+//        OkHttpUtils.RealCallback callback=new OkHttpUtils.RealCallback() {
+//            @Override
+//            public void onResponse(Call call, Response response) {
+//                String city = null;
+//                try {
+//                    city = WeatherJsonUtils.getCity(response.body().string());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                if (TextUtils.isEmpty(city)){
+//                    LogUtils.e(TAG, "load location info failure.");
+//                    listener.onFailure("load location info failure.", null);
+//                }else listener.onSuccess(city);
+//            }
+//
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                LogUtils.e(TAG, "load location info failure.");
+//                listener.onFailure("load location info failure.", e);
+//            }
+//        };
+//        OkHttpUtils.getmInstance().get(url,callback);
+
+        OkHttpUtils.getInstance().doGet(url,new MyNetWorkCallBack() {
             @Override
-            public void onResponse(Call call, Response response) {
-                String city =WeatherJsonUtils.getCity(response.toString());
-                if (TextUtils.isEmpty(city)){
-                    LogUtils.e(TAG, "load location info failure.");
-                    listener.onFailure("load location info failure.", null);
-                }else listener.onSuccess(city);
+            public void onError(Exception e) {
+
             }
 
             @Override
-            public void onFailure(Call call, IOException e) {
-                LogUtils.e(TAG, "load location info failure.");
-                listener.onFailure("load location info failure.", e);
+            public void onSuccess(String successMsg) {
+                String city=null;
+                city=WeatherJsonUtils.getCity(successMsg);
+                listener.onSuccess(city);
             }
-        };
-        OkHttpUtils.getmInstance().get(url,callback);
+        });
+
 
 
     }

@@ -13,8 +13,8 @@ import java.util.IdentityHashMap;
 public class NewsDetailPresenterImpl implements NewsDetailPresenter, OnLoadNewsDetailListener {
 
     private Context mContext;
-private NewsDetailView mNewsDetailView;
-private NewsModel mNewsModel;
+    private NewsDetailView mNewsDetailView;
+    private NewsModel mNewsModel;
 
     public NewsDetailPresenterImpl(Context context, NewsDetailView newsDetailView) {
         this.mContext= context;

@@ -9,7 +9,7 @@ import com.example.mysimplenews.R;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
-public class ImageLoaderUtils {
+public class ImageLoaderUtils {//将图片加载进imageView
 
     public static void display(Context context, ImageView imageView, String url, int placeholder, int error) {
         if(imageView == null) {
